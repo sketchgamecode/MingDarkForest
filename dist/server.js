@@ -21,7 +21,7 @@ app.use('/api/world', world_1.default);
 app.get('/api/health', (_req, res) => {
     res.json({ status: 'ok', timestamp: Date.now() });
 });
-app.get('*', (_req, res) => {
+app.get('*path', (_req, res) => {
     res.sendFile(path_1.default.join(process.cwd(), 'public', 'index.html'));
 });
 (0, database_1.getDb)();
