@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>明朝暗森 · Ming Dynasty Dark Forest</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Creation Screen -->
+  <div id="creation-screen" class="screen">
+    <div class="creation-container">
+      <div class="creation-title">
+        <h1>明朝暗森</h1>
+        <h2>Ming Dynasty Dark Forest</h2>
+        <p class="subtitle">Enter the dark forest where civilizations collide in silence…</p>
+      </div>
+      <div class="creation-form">
+        <div class="form-group">
+          <label for="player-name">Your Name</label>
+          <input type="text" id="player-name" placeholder="Enter your name" maxlength="24" />
+        </div>
+        <div class="form-group">
+          <label>Choose Your Class</label>
+          <div class="class-grid" id="class-grid">
+            <div class="class-card" data-class="Scholar">
+              <div class="class-icon">📜</div>
+              <div class="class-name">Scholar <span class="chinese">文士</span></div>
+              <div class="class-desc">High wisdom, generates Knowledge passively, can scout threats</div>
+              <div class="class-stats">
+                <span>ATK 8</span><span>DEF 10</span><span>WIS 20</span><span>STL 12</span>
+              </div>
+            </div>
+            <div class="class-card" data-class="Warrior">
+              <div class="class-icon">⚔️</div>
+              <div class="class-name">Warrior <span class="chinese">武士</span></div>
+              <div class="class-desc">High attack/defense, generates Supplies, can attack players</div>
+              <div class="class-stats">
+                <span>ATK 20</span><span>DEF 18</span><span>WIS 8</span><span>STL 8</span>
+              </div>
+            </div>
+            <div class="class-card" data-class="Merchant">
+              <div class="class-icon">💰</div>
+              <div class="class-name">Merchant <span class="chinese">商人</span></div>
+              <div class="class-desc">Balanced stats, generates Silver fastest, can bribe threats</div>
+              <div class="class-stats">
+                <span>ATK 12</span><span>DEF 12</span><span>WIS 14</span><span>STL 10</span>
+              </div>
+            </div>
+            <div class="class-card" data-class="Monk">
+              <div class="class-icon">🪷</div>
+              <div class="class-name">Monk <span class="chinese">和尚</span></div>
+              <div class="class-desc">High Qi generation, very low visibility</div>
+              <div class="class-stats">
+                <span>ATK 10</span><span>DEF 15</span><span>WIS 18</span><span>STL 16</span>
+              </div>
+            </div>
+            <div class="class-card" data-class="Hermit">
+              <div class="class-icon">🌿</div>
+              <div class="class-name">Hermit <span class="chinese">隐士</span></div>
+              <div class="class-desc">Maximum stealth, slow but safe progression</div>
+              <div class="class-stats">
+                <span>ATK 9</span><span>DEF 14</span><span>WIS 16</span><span>STL 25</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button id="create-btn" class="btn-primary" disabled>Enter the Dark Forest</button>
+        <div id="creation-error" class="error-msg"></div>
+        <div class="existing-player">
+          <p>Already have a character?</p>
+          <input type="text" id="existing-id" placeholder="Enter your Player ID" />
+          <button id="load-btn" class="btn-secondary">Load Character</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Dashboard -->
+  <div id="game-screen" class="screen hidden">
+    <header class="game-header">
+      <div class="header-left">
+        <h1 class="game-title">明朝暗森</h1>
+        <span id="header-region" class="header-region"></span>
+      </div>
+      <div class="header-center">
+        <div id="world-events-banner" class="world-events-banner"></div>
+      </div>
+      <div class="header-right">
+        <span id="header-player" class="header-player"></span>
+        <button id="logout-btn" class="btn-tiny">✕ Leave</button>
+      </div>
+    </header>
+
+    <div class="game-layout">
+      <!-- Left Panel: Character -->
+      <aside class="panel panel-left">
+        <div class="panel-section">
+          <h3 class="panel-title">Character</h3>
+          <div class="char-identity">
+            <div id="char-icon" class="char-icon"></div>
+            <div>
+              <div id="char-name" class="char-name"></div>
+              <div id="char-class" class="char-class"></div>
+              <div id="char-level" class="char-level"></div>
+            </div>
+          </div>
+          <div class="bar-label"><span>HP</span><span id="health-text"></span></div>
+          <div class="progress-bar"><div id="health-bar" class="bar-fill bar-hp"></div></div>
+          <div class="bar-label"><span>XP</span><span id="xp-text"></span></div>
+          <div class="progress-bar"><div id="xp-bar" class="bar-fill bar-xp"></div></div>
+        </div>
+
+        <div class="panel-section">
+          <h3 class="panel-title">Combat Stats</h3>
+          <div class="stat-grid">
+            <div class="stat-item"><span class="stat-label">ATK</span><span id="stat-attack" class="stat-value"></span></div>
+            <div class="stat-item"><span class="stat-label">DEF</span><span id="stat-defense" class="stat-value"></span></div>
+            <div class="stat-item"><span class="stat-label">WIS</span><span id="stat-wisdom" class="stat-value"></span></div>
+            <div class="stat-item"><span class="stat-label">STL</span><span id="stat-stealth" class="stat-value"></span></div>
+          </div>
+        </div>
+
+        <div class="panel-section">
+          <h3 class="panel-title">Visibility</h3>
+          <div class="visibility-display">
+            <div class="bar-label"><span id="vis-desc"></span><span id="vis-val"></span></div>
+            <div class="progress-bar"><div id="vis-bar" class="bar-fill bar-vis"></div></div>
+          </div>
+          <div id="char-status" class="char-status"></div>
+        </div>
+
+        <div class="panel-section">
+          <h3 class="panel-title">Stance</h3>
+          <div class="stance-buttons">
+            <button class="stance-btn" data-stance="hide" title="Lower income, safer">🌑 Hide</button>
+            <button class="stance-btn" data-stance="balanced" title="Balanced approach">⚖️ Balance</button>
+            <button class="stance-btn" data-stance="expand" title="Higher income, more visible">🔥 Expand</button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Center: Resources + Map + Events -->
+      <main class="panel panel-center">
+        <div class="panel-section">
+          <h3 class="panel-title">Resources <button id="collect-btn" class="btn-micro">⬇ Collect</button></h3>
+          <div class="resource-grid">
+            <div class="resource-card">
+              <div class="res-icon">🪙</div>
+              <div class="res-name">Silver</div>
+              <div id="res-silver" class="res-value">0</div>
+            </div>
+            <div class="resource-card">
+              <div class="res-icon">📚</div>
+              <div class="res-name">Knowledge</div>
+              <div id="res-knowledge" class="res-value">0</div>
+            </div>
+            <div class="resource-card">
+              <div class="res-icon">🎒</div>
+              <div class="res-name">Supplies</div>
+              <div id="res-supplies" class="res-value">0</div>
+            </div>
+            <div class="resource-card">
+              <div class="res-icon">☯️</div>
+              <div class="res-name">Qi</div>
+              <div id="res-qi" class="res-value">0</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-section">
+          <h3 class="panel-title">Regions of Ming China</h3>
+          <div class="region-grid" id="region-grid"></div>
+        </div>
+
+        <div class="panel-section">
+          <h3 class="panel-title">Event Log</h3>
+          <div id="event-log" class="event-log"></div>
+        </div>
+      </main>
+
+      <!-- Right Panel: Upgrades + Leaderboard -->
+      <aside class="panel panel-right">
+        <div class="panel-section">
+          <h3 class="panel-title">Upgrades</h3>
+          <div id="upgrades-list" class="upgrades-list"></div>
+        </div>
+
+        <div class="panel-section">
+          <h3 class="panel-title">🏆 Leaderboard</h3>
+          <div id="leaderboard-list" class="leaderboard-list"></div>
+        </div>
+
+        <div class="panel-section">
+          <h3 class="panel-title">Player ID</h3>
+          <div id="player-id-display" class="player-id-display"></div>
+          <button id="copy-id-btn" class="btn-secondary">Copy ID</button>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Death overlay -->
+    <div id="death-overlay" class="death-overlay hidden">
+      <div class="death-box">
+        <h2>☠ You Have Fallen</h2>
+        <p id="death-message"></p>
+        <p id="revive-cost"></p>
+        <button id="revive-btn" class="btn-primary">Revive</button>
+        <button id="new-char-btn" class="btn-secondary">Create New Character</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
