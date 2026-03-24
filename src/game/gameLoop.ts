@@ -31,6 +31,7 @@ interface PlayerRow {
   stance: Stance;
   region: string;
   last_tick: number;
+  created_at: number;
   upgrades: string;
   alive: number;
   kills: number;
@@ -181,7 +182,7 @@ function updateLeaderboardEntry(playerId: string, db: ReturnType<typeof getDb>):
   if (!player) return;
 
   const now = Math.floor(Date.now() / 1000);
-  const survivalDays = Math.floor((now - 0) / 86400);
+  const survivalDays = Math.floor((now - player.created_at) / 86400);
   const score = Math.floor(
     player.level * 100 +
     player.silver * 0.1 +
